@@ -6,8 +6,8 @@
 #/etc/uwuscan/mfd/XeroxWorkCentre3615.pl
 
 # executing scripts to create a log file for each printer
-perl /etc/uwuscan/mfd/XeroxVersaLinkB405.pl
-perl /etc/uwuscan/mfd/XeroxWorkCentre3615.pl
+#perl /etc/uwuscan/mfd/XeroxVersaLinkB405.pl
+#perl /etc/uwuscan/mfd/XeroxWorkCentre3615.pl
 
 #/var/uwuscan_log/*.txt
 
@@ -32,13 +32,13 @@ function check_last_log() {
 
   # Check if the cartridge or drum status is less than 20%
   if [ "$CARTRIDGE_STATUS" -le 20 ] || [ "$DRUM_STATUS" -le 20 ]; then
-    MESSAGE="wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 20%!!! please wepwace it!!! owo"
+    MESSAGE=$(echo "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 20%!!! please wepwace it!!! owo")
     notify_in_telegram "$MESSAGE"
   elif [ "$CARTRIDGE_STATUS" -le 30 ] || [ "$DRUM_STATUS" -le 30 ]; then
-    MESSAGE="wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 30%. wepwacement will be needed soon uwu~"
+    MESSAGE=$(echo "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 30%. wepwacement will be needed soon uwu~")
     notify_in_telegram "$MESSAGE"
   else
-    MESSAGE="$PRINTER_NAME is fine uwu~"
+    MESSAGE=$(echo "$PRINTER_NAME is fine uwu~")
     notify_in_telegram "$MESSAGE"
   fi
 }
