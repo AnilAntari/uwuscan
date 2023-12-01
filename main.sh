@@ -37,7 +37,7 @@ function check_last_log() {
   elif [ "$CARTRIDGE_STATUS" -le 30 ] || [ "$DRUM_STATUS" -le 30 ]; then
     MESSAGE="wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 30%. wepwacement will be needed soon uwu~"
     notify_in_telegram "$MESSAGE"
-  elif
+  else
     MESSAGE="$PRINTER_NAME is fine uwu~"
     notify_in_telegram "$MESSAGE"
   fi
