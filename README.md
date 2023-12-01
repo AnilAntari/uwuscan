@@ -42,7 +42,7 @@ sudo cp -r uwuscan/ /etc/ && sudo chmod +x /etc/uwuscan/mfd/*
 To enable notifications in a Telegram, uncomment the line in main.sh:
 
 ```bash
-etc/uwuscan/attention.sh
+/etc/uwuscan/attention.sh
 ```
 
 ### Configuring the script
