@@ -45,7 +45,7 @@ foreach my $element (@ip_address) {
 	my $time = localtime();
 	my $heredoc =<<"END_MESSAGE";
 $time
-Xerox VersaLink B405
+Printer Name: Xerox VersaLink B405
 
 IP-address: $element
 Status cartridge: ${cartridge}%
