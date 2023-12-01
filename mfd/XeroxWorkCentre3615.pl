@@ -31,7 +31,7 @@ foreach my $element (@ip_address) {
      );
 	
     my $cartridge_max_status = $session->get_request(-varbindlist => [$oid_list[0]]);
-	my $cartridge_current_status = $session->get_request(-varbindlist => [$oid_list[1]]);
+    my $cartridge_current_status = $session->get_request(-varbindlist => [$oid_list[1]]);
     my $drum_max_status = $session->get_request(-varbindlist => [$oid_list[2]]);
     my $drum_current_status = $session->get_request(-varbindlist => [$oid_list[3]]);
 
@@ -45,7 +45,7 @@ foreach my $element (@ip_address) {
 	my $time = localtime();
 	my $heredoc =<<"END_MESSAGE";
 $timeсв
-Xerox WorkCentre 3615
+Printer Name: Xerox WorkCentre 3615
 
 IP-address: $element
 Status cartridge: ${cartridge}%
