@@ -20,16 +20,16 @@ function notify_in_telegram() {
 }
 
 function check_last_log() {
-  LOG_FILE=$FILE
+  LOG_FILE=$file
 
   # Get the last log entry
   LAST_LOG=$(tac $LOG_FILE | awk '/---/{exit} 1' | tac)
 
   # Extract the printer name, cartridge and drum status
-  PRINTER_NAME=$(echo "$LAST_LOG" | awk -F': ' '/Printer Nsame/{print $2}')
+  PRINTER_NAME=$(echo "$LAST_LOG" | awk -F': ' '/Printer Name/{print $2}')
   CARTRIDGE_STATUS=$(echo "$LAST_LOG" | awk -F': ' '/Status cartridge/{print $2}' | tr -d '%')
   DRUM_STATUS=$(echo "$LAST_LOG" | awk -F': ' '/Status drum/{print $2}' | tr -d '%')
-
+  MESSAGE=""
   # Check if the cartridge or drum status is less than 20%
   if [ "$CARTRIDGE_STATUS" -le 20 ] || [ "$DRUM_STATUS" -le 20 ]; then
     MESSAGE=$(echo "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 20%!!! please wepwace it!!! owo")
