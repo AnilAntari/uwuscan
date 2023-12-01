@@ -36,3 +36,21 @@ sudo cp -r uwuscan/ /etc/ && sudo chmod +x /etc/uwuscan/mfd/*
 5. Uncomment in main.sh the scripts you need;
 6. Specify the necessary ip addresses in the scripts;
 7. Add main.sh in your favorite time-based job scheduler.
+
+## Telegram Notifications
+
+To enable notifications in a Telegram, uncomment the line in main.sh:
+
+```bash
+etc/uwuscan/attention.sh
+```
+
+### Configuring the script
+
+In attention.sh in API_TOKEN, specify the bot token, and in CHAT_ID, specify your chat ID. 
+
+You can configure the trigger parameters for the bot:
+
+```bash
+[ "$CARTRIDGE_STATUS" -lt 20 ] || [ "$DRUM_STATUS" -lt 20 ]
+```
