@@ -5,10 +5,6 @@
 #/etc/uwuscan/mfd/XeroxVersaLinkB405.pl
 #/etc/uwuscan/mfd/XeroxWorkCentre3615.pl
 
-# executing scripts to create a log file for each printer
-#perl /etc/uwuscan/mfd/XeroxVersaLinkB405.pl
-#perl /etc/uwuscan/mfd/XeroxWorkCentre3615.pl
-
 #/var/uwuscan_log/*.txt
 
 function notify_in_telegram() {
