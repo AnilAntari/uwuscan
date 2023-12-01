@@ -14,27 +14,38 @@
 function notify_in_telegram() {
   API_TOKEN="your_api_token"  # your tg bot API token
   CHAT_ID="your_chat_id"  # your tg chat ID
-
-  # Send the message
+  echo "$MESSAGE"
+  # send the message
   curl -s -X POST "https://api.telegram.org/bot$API_TOKEN/sendMessage" -d chat_id=$CHAT_ID -d text="$MESSAGE"
 }
 
-function check_last_log() {
-  LOG_FILE=$file
+function log_parser() {
+  LOG_FILE="$file"
+  NUMBER_OF_PRINTERS=1 #number of pwintews in a single log file(idk why i made this)
+  PRINTER_NAME=""
+  CARTRIDGE_STATUS=0
+  DRUM_STATUS=0
+    while IFS= read -r line; do
+  if [[ $line == "Printer Name: "* ]]; then
+    PRINTER_NAME=${line#*: }
+  elif [[ $line == "Status cartridge: "* ]]; then
+    CARTRIDGE_STATUS=${line#*: }
+    CARTRIDGE_STATUS=${CARTRIDGE_STATUS//%/}
+  elif [[ $line == "Status drum: "* ]]; then
+    DRUM_STATUS=${line#*: }
+    DRUM_STATUS=${DRUM_STATUS//%/}
+  fi
+done < <(tac "$LOG_FILE" | awk -v segments="$NUMBER_OF_PRINTERS" '/---/{if(seen++ == segments) exit} 1' | tac)
+}
 
-  # Get the last log entry
-  LAST_LOG=$(tac $LOG_FILE | awk '/---/{exit} 1' | tac)
-
-  # Extract the printer name, cartridge and drum status
-  PRINTER_NAME=$(echo "$LAST_LOG" | awk -F': ' '/Printer Name/{print $2}')
-  CARTRIDGE_STATUS=$(echo "$LAST_LOG" | awk -F': ' '/Status cartridge/{print $2}' | tr -d '%')
-  DRUM_STATUS=$(echo "$LAST_LOG" | awk -F': ' '/Status drum/{print $2}' | tr -d '%')
+check_last_log() {
+    log_parser
   MESSAGE=""
-  # Check if the cartridge or drum status is less than 20%
-  if [ "$CARTRIDGE_STATUS" -le 20 ] || [ "$DRUM_STATUS" -le 20 ]; then
+  # check if the cartridge or drum status is less than 20%
+  if [ "$CARTRIDGE_STATUS" -lt 20 ] || [ "$DRUM_STATUS" -lt 20 ]; then
     MESSAGE=$(echo "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 20%!!! please wepwace it!!! owo")
     notify_in_telegram "$MESSAGE"
-  elif [ "$CARTRIDGE_STATUS" -le 30 ] || [ "$DRUM_STATUS" -le 30 ]; then
+  elif [ "$CARTRIDGE_STATUS" -lt 30 ] || [ "$DRUM_STATUS" -lt 30 ]; then
     MESSAGE=$(echo "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 30%. wepwacement will be needed soon uwu~")
     notify_in_telegram "$MESSAGE"
   else
@@ -43,7 +54,7 @@ function check_last_log() {
   fi
 }
 
+
 for file in /var/uwuscan_log/*.txt; do
   check_last_log "$file"
 done
-
