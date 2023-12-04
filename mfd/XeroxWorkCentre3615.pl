@@ -44,7 +44,7 @@ foreach my $element (@ip_address) {
 
 	my $time = localtime();
 	my $heredoc =<<"END_MESSAGE";
-$timeсв
+$time
 Printer Name: Xerox WorkCentre 3615
 
 IP-address: $element
