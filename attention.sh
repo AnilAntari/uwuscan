@@ -10,42 +10,49 @@ function notify_in_telegram() {
   curl -s -X POST "https://api.telegram.org/bot$API_TOKEN/sendMessage" -d chat_id=$CHAT_ID -d text="$MESSAGE"
 }
 
-function log_parser() {
-  LOG_FILE="$file"
-  NUMBER_OF_PRINTERS=1 #number of pwintews in a single log file(idk why i made this)
-  PRINTER_NAME=""
-  CARTRIDGE_STATUS=0
-  DRUM_STATUS=0
-    while IFS= read -r line; do
-  if [[ $line == "Printer Name: "* ]]; then
-    PRINTER_NAME=${line#*: }
-  elif [[ $line == "Status cartridge: "* ]]; then
-    CARTRIDGE_STATUS=${line#*: }
-    CARTRIDGE_STATUS=${CARTRIDGE_STATUS//%/}
-  elif [[ $line == "Status drum: "* ]]; then
-    DRUM_STATUS=${line#*: }
-    DRUM_STATUS=${DRUM_STATUS//%/}
-  fi
-done < <(tac "$LOG_FILE" | awk -v segments="$NUMBER_OF_PRINTERS" '/---/{if(seen++ == segments) exit} 1' | tac)
-}
-
 check_last_log() {
-    log_parser
   MESSAGE=""
   # check if the cartridge or drum status is less than 20%
   if [ "$CARTRIDGE_STATUS" -lt 20 ] || [ "$DRUM_STATUS" -lt 20 ]; then
-    MESSAGE=$(echo "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 20%!!! please wepwace it!!! owo")
+    MESSAGE=$(echo -e "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 20%!!! please wepwace it!!! owo\ntimestamp: $(date +"%d/%m/%Y %H:%M")")
     notify_in_telegram "$MESSAGE"
-  elif [ "$CARTRIDGE_STATUS" -lt 30 ] || [ "$DRUM_STATUS" -lt 30 ]; then
-    MESSAGE=$(echo "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 30%. wepwacement will be needed soon uwu~")
+  elif [ "$CARTRIDGE_STATUS" -lt 30 ] && [ "$CARTRIDGE_STATUS" -gt 20 ] || [ "$DRUM_STATUS" -lt 30 ] && [ "$CARTRIDGE_STATUS" -gt 20 ]; then
+    MESSAGE=$(echo -e "wawning: cawtwidge or dwum status in $PRINTER_NAME is less than 30%. wepwacement will be needed soon uwu~\ntimestamp: $(date +"%d/%m/%Y %H:%M")")
     notify_in_telegram "$MESSAGE"
   else
     MESSAGE=$(echo "$PRINTER_NAME is fine uwu~")
-    notify_in_telegram "$MESSAGE"
   fi
 }
 
+function log_parser() {
+  LOG_FILE="$file"
+  PRINTER_NAME=""
+  CARTRIDGE_STATUS=0
+  DRUM_STATUS=0
+  TODAY=$(date "+%a %b  %d")
+  echo "$TODAY"
+      while IFS= read -r line; do
+        if [[ $line == "Printer Name: "* ]]; then
+          PRINTER_NAME=${line#*: }
+          echo "$PRINTER_NAME"
+        elif [[ $line == "Status cartridge: "* ]]; then
+          CARTRIDGE_STATUS=${line#*: }
+          CARTRIDGE_STATUS=${CARTRIDGE_STATUS//%/}
+          echo "$CARTRIDGE_STATUS"
+          check_last_log
+        elif [[ $line == "Status drum: "* ]]; then
+          DRUM_STATUS=${line#*: }
+          DRUM_STATUS=${DRUM_STATUS//%/}
+          echo "$DRUM_STATUS"
+          check_last_log
+    fi
+      done < <( tac "$LOG_FILE" | awk -v date="$TODAY" 'BEGIN{RS="---"} $0 ~ date' | tac )
+}
+
+
+
 
 for file in /var/uwuscan_log/*.txt; do
-  check_last_log "$file"
+echo "$file"
+  log_parser "$file"
 done
