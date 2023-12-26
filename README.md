@@ -60,7 +60,13 @@ You can configure the trigger parameters for the bot:
 snmpwalk installation
 
 ```bash 
-sudo apt-get install snmpwalk
+sudo apt-get install net-snmp
+```
+
+or
+
+```bash
+sudo pacman -S net-snmp
 ```
 
 Search oid
