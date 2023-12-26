@@ -54,3 +54,17 @@ You can configure the trigger parameters for the bot:
 ```bash
 [ "$CARTRIDGE_STATUS" -lt 20 ] || [ "$DRUM_STATUS" -lt 20 ]
 ```
+
+# oid
+
+snmpwalk installation
+
+```bash 
+sudo apt-get install snmpwalk
+```
+
+Search oid
+
+```bash
+sudo snmpwalk -v 2c -c public {ip-address}
+```
