@@ -60,7 +60,7 @@ You can configure the trigger parameters for the bot:
 snmpwalk installation
 
 ```bash 
-sudo apt-get install net-snmp
+sudo apt-get install snmp
 ```
 
 or
