@@ -39,20 +39,32 @@ sudo cp -r uwuscan/ /etc/ && sudo chmod +x /etc/uwuscan/mfd/*
 
 ## Telegram Notifications
 
-To enable notifications in a Telegram, uncomment the line in main.sh:
+To enable notifications in a Telegram, install rust-script and enable attention.rs in main.sh
 
+1. Install rust-script
+
+Using your package manager:
 ```bash
-/etc/uwuscan/attention.sh
+sudo pacman -S rust-script
+```
+Or using cargo:
+```bash
+curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+cargo binstall --no-confirm rust-script
+```
+2. Uncomment script this line in main.sh
+```bash
+/etc/uwuscan/attention.rs
 ```
 
 ### Configuring the script
 
-In attention.sh in API_TOKEN, specify the bot token, and in CHAT_ID, specify your chat ID. 
+In attention.rs in API_TOKEN, specify the bot token, and in CHAT_ID, specify your chat ID. 
 
 You can configure the trigger parameters for the bot:
 
-```bash
-[ "$CARTRIDGE_STATUS" -lt 20 ] || [ "$DRUM_STATUS" -lt 20 ]
+```rust
+entry.cartrige < 20 || entry.drum < 20
 ```
 
 # oid

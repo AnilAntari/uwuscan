@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Xerox
 
@@ -8,4 +8,4 @@
 
 # Telegram Notifications
 
-#/etc/uwuscan/attention.sh
+#/etc/uwuscan/attention.rs
