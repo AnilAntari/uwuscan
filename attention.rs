@@ -90,7 +90,8 @@ async fn main() -> anyhow::Result<()> {
     {
         let client = Arc::clone(&client);
         let last_entry: Entry = fs::read_to_string(file.path())?
-            .trim_end_matches("---\n")
+            .trim()
+            .trim_end_matches("---")
             .split("---")
             .last()
             .context("Entry not found")?
