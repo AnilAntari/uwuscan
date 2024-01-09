@@ -96,7 +96,11 @@ async fn main() -> anyhow::Result<()> {
             .last()
             .context("Entry not found")?
             .trim()
-            .parse()?;
+            .parse()
+            .context(format!(
+                "Could not parse log entry of {}",
+                file.path().display()
+            ))?;
 
         if Local::now().date_naive() != last_entry.date {
             continue;
