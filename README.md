@@ -37,36 +37,6 @@ sudo cp -r uwuscan/ /etc/ && sudo chmod +x /etc/uwuscan/mfd/*
 6. Specify the necessary ip addresses in the scripts;
 7. Add main.sh in your favorite time-based job scheduler.
 
-## Telegram Notifications
-
-To enable notifications in a Telegram, install rust-script and enable attention.rs in main.sh
-
-1. Install rust-script
-
-Using your package manager:
-```bash
-sudo pacman -S rust-script
-```
-Or using cargo:
-```bash
-curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-cargo binstall --no-confirm rust-script
-```
-2. Uncomment script this line in main.sh
-```bash
-/etc/uwuscan/attention.rs
-```
-
-### Configuring the script
-
-In attention.rs in API_TOKEN, specify the bot token, and in CHAT_ID, specify your chat ID. 
-
-You can configure the trigger parameters for the bot:
-
-```rust
-entry.cartrige < 20 || entry.drum < 20
-```
-
 # oid
 
 snmpwalk installation
