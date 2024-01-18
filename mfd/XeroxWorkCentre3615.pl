@@ -23,22 +23,16 @@ foreach my $element (@ip_address) {
     }
 
     # Getting the values of the tuner and the drum cartridge
-    my @oid_list = (
-    	'1.3.6.1.2.1.43.11.1.1.8.1.1', # Cartridge max status 
-    	'1.3.6.1.2.1.43.11.1.1.9.1.1', # Cartridge current status  
-    	'1.3.6.1.2.1.43.11.1.1.8.1.2', # Drum max status  
-    	'1.3.6.1.2.1.43.11.1.1.9.1.2'  # Drum current status  
-     );
-	
-    my $cartridge_max_status = $session->get_request(-varbindlist => [$oid_list[0]]);
-    my $cartridge_current_status = $session->get_request(-varbindlist => [$oid_list[1]]);
-    my $drum_max_status = $session->get_request(-varbindlist => [$oid_list[2]]);
-    my $drum_current_status = $session->get_request(-varbindlist => [$oid_list[3]]);
+    require '/etc/uwuscan/oid_list/XeroxWorkCentre3615.pm';
+    my $cartridge_max_status = $session->get_request(-varbindlist => [$set::oid_list[0]]);
+    my $cartridge_current_status = $session->get_request(-varbindlist => [$set::oid_list[1]]);
+    my $drum_max_status = $session->get_request(-varbindlist => [$set::oid_list[2]]);
+    my $drum_current_status = $session->get_request(-varbindlist => [$set::oid_list[3]]);
 
     # РCalculating the state as a percentage
-    my $status_cartridge = ($cartridge_max_status->{$oid_list[0]} - $cartridge_current_status->{$oid_list[1]}) / $cartridge_max_status->{$oid_list[0]} * 100;
+    my $status_cartridge = ($cartridge_max_status->{$set::oid_list[0]} - $cartridge_current_status->{$set::oid_list[1]}) / $cartridge_max_status->{$set::oid_list[0]} * 100;
     my $cartridge = 100 - $status_cartridge;
-    my $drum_status = ($drum_max_status->{$oid_list[2]} - $drum_current_status->{$oid_list[3]}) / $drum_max_status->{$oid_list[2]} * 100;
+    my $drum_status = ($drum_max_status->{$set::oid_list[2]} - $drum_current_status->{$set::oid_list[3]}) / $drum_max_status->{$set::oid_list[2]} * 100;
     my $drum = 100 - $drum_status;
 
 
