@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 use Net::SNMP;
+use Log::Any qw($log);
+use Log::Any:Adapter ('File', '/var/uwuscan_log/XeroxWorkCentre3615.log');
 
 # List of polled IP addresses
 my @ip_address = (
@@ -35,19 +37,6 @@ foreach my $element (@ip_address) {
     my $drum_status = ($drum_max_status->{$set::oid_list[2]} - $drum_current_status->{$set::oid_list[3]}) / $drum_max_status->{$set::oid_list[2]} * 100;
     my $drum = 100 - $drum_status;
 
-
-	my $time = localtime();
-	my $heredoc =<<"END_MESSAGE";
-$time
-Printer Name: Xerox WorkCentre 3615
-
-IP-address: $element
-Status cartridge: ${cartridge}%
-Status drum: ${drum}%
----
-END_MESSAGE
-    # Writing current values to a log file
-    my $log_file = '/var/uwuscan_log/XeroxWorkCentre3615_log.txt';
-    open(my $log, '>>', $log_file) or die "Error";
-	say $log $heredoc;
+    # Log
+    $log->info($element, $cartridge, $drum);
 }
