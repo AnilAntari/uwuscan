@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Net::SNMP;
 use Log::Any qw($log);
-use Log::Any:Adapter ('File', '/var/uwuscan_log/XeroxWorkCentre3615.log');
+use Log::Any::Adapter ('File', '/var/uwuscan_log/XeroxWorkCentre3615.log');
 
 # List of polled IP addresses
 my @ip_address = (
