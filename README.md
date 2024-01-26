@@ -49,11 +49,15 @@ sudo pacman -S rust-script
 ```
 Or using cargo:
 ```bash
+# Don't forget to install rust/cargo
 curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 cargo binstall --no-confirm rust-script
 ```
-2. Uncomment script this line in main.sh
+2. Uncomment these lines in main.sh and put your token and id in env vars
 ```bash
+LOGS_DIR = /var/uwuscan_log
+API_TOKEN = "Your telegram api token"
+CHAT_ID = "Your telegram chat id"
 /etc/uwuscan/attention.rs
 ```
 
