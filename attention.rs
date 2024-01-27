@@ -7,23 +7,16 @@
 //! tokio = { version = "1.35", default-features = false, features = ["rt-multi-thread", "macros", "rt"] }
 //! ```
 
-use std::{collections::HashMap, fs, str::FromStr, sync::Arc};
+use std::{collections::HashMap, env, fs, str::FromStr, sync::Arc};
 
 use anyhow::Context;
 use chrono::{Local, NaiveDate};
 use reqwest::{Client, StatusCode};
 use tokio::task::JoinSet;
 
-// Configure here
-const CHAT_ID: &str = "PUT YOUR CHAT ID HERE";
-const API_TOKEN: &str = "PUT YOUR TOKEN HERE";
-
-const LOGS_DIR: &str = "/var/uwuscan_log";
-
 #[derive(Debug)]
 struct Entry {
     date: NaiveDate,
-    name: String,
     _ip: String,
     cartrige: u8,
     drum: u8,
@@ -33,68 +26,74 @@ impl FromStr for Entry {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut lines = s.lines().filter(|s| !s.is_empty());
+        let (date, vals) = s[1..].split_once(']').unwrap();
+        let vals: Vec<&str> = vals.trim().split(' ').collect();
+
+        let date = chrono::NaiveDateTime::parse_from_str(date, "%c")?;
+
         let entry = Entry {
-            date: chrono::NaiveDateTime::parse_from_str(lines.next().unwrap(), "%c")?.into(),
-            name: lines.next().unwrap()[14..].to_string(),
-            _ip: lines.next().unwrap()[12..].to_string(),
-            cartrige: lines.next().unwrap()[18..].trim_end_matches('%').parse()?,
-            drum: lines.next().unwrap()[13..].trim_end_matches('%').parse()?, //12 18 13
+            date: date.into(),
+            _ip: vals[0].into(),
+            cartrige: vals[1].parse()?,
+            drum: vals[2].parse()?,
         };
         Ok(entry)
     }
 }
 async fn notify_telegram(client: Arc<Client>, message: String) -> anyhow::Result<()> {
     let mut map = HashMap::new();
-    map.insert("chat_id", CHAT_ID);
-    map.insert("text", &message);
+    map.insert("chat_id", env::var("CHAT_ID")?);
+    map.insert("text", message);
 
     let res = client
         .post(format!(
             "https://api.telegram.org/bot{}/sendMessage",
-            API_TOKEN
+            env::var("API_TOKEN")?
         ))
         .json(&map)
         .send()
         .await?;
 
-    match res.status() {
-        StatusCode::OK => Ok(()),
-        other_code => anyhow::bail!("Status code: {}", other_code),
+    if StatusCode::OK != res.status() {
+        anyhow::bail!("{}", res.text().await?)
     }
+
+    Ok(())
 }
 
-fn create_message(entry: Entry) -> String {
+fn create_message(entry: Entry, name: &str) -> String {
     if entry.cartrige < 20 || entry.drum < 20 {
         format!(
-            "wawning: cawtwidge or dwum status in {} is less than 20%!!! please wepwace it!!! owo",
-            entry.name
+            "wawning: cawtwidge or dwum status in {name} is less than 20%!!! please wepwace it!!! owo",
         )
     } else if entry.cartrige < 30 || entry.drum < 30 {
-        format!("wawning: cawtwidge or dwum status in {} is less than 30%. wepwacement will be needed soon uwu~", entry.name)
+        format!("wawning: cawtwidge or dwum status in {name} is less than 30%. wepwacement will be needed soon uwu~")
     } else {
-        format!("{} is fine uwu~", entry.name)
+        format!("{name} is fine uwu~")
     }
 }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let dir = fs::read_dir(LOGS_DIR)?;
+    let dir = fs::read_dir(env::var("LOGS_DIR")?).context("Could not read logs directory")?;
     let client = Arc::new(reqwest::Client::default());
 
     let mut jset = JoinSet::new();
 
     for file in dir
         .map_while(Result::ok)
-        .filter(|de| de.file_name().to_string_lossy().ends_with(".txt"))
+        .filter(|de| de.file_name().to_string_lossy().ends_with(".log"))
     {
         let client = Arc::clone(&client);
+
+        let file_name = file.file_name();
+        let printer_name = file_name.to_str().unwrap().trim_end_matches(".log");
+
         let last_entry: Entry = fs::read_to_string(file.path())?
             .trim()
-            .trim_end_matches("---")
-            .split("---")
+            .lines()
             .last()
-            .context("Entry not found")?
+            .context("Log entry not found")?
             .trim()
             .parse()
             .context(format!(
@@ -105,7 +104,7 @@ async fn main() -> anyhow::Result<()> {
         if Local::now().date_naive() != last_entry.date {
             continue;
         }
-        let message = create_message(last_entry);
+        let message = create_message(last_entry, printer_name);
 
         jset.spawn(notify_telegram(Arc::clone(&client), message));
     }

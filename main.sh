@@ -8,4 +8,7 @@
 
 # Telegram Notifications
 
+#LOGS_DIR = /var/uwuscan_log
+#API_TOKEN = "Your telegram api token"
+#CHAT_ID = "Your telegram chat id"
 #/etc/uwuscan/attention.rs
