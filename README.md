@@ -19,12 +19,12 @@ sudo mkdir /var/uwuscan_log
 3. Installing the module:
 
 ```bash
-sudo pacman -S perl-net-snmp
+sudo pacman -S perl-net-snmp perl-log-any
 ```
 Or else
 
 ```bash
-sudo apt install libnet-snmp-perl
+sudo apt-get install libnet-snmp-perl liblog-any-perl
 ```
 
 4. Copy the script directory to /etc and make them executable:
