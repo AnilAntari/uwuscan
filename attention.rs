@@ -93,7 +93,7 @@ async fn main() -> anyhow::Result<()> {
             .trim()
             .lines()
             .last()
-            .context("Log entry not found")?
+            .context(format!("Log entry not found in {}, file may be empty", file.path().display()))?
             .trim()
             .parse()
             .context(format!(
