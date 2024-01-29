@@ -19,12 +19,12 @@ sudo mkdir /var/uwuscan_log
 3. Installing the module:
 
 ```bash
-sudo pacman -S perl-net-snmp
+sudo pacman -S perl-net-snmp perl-log-any
 ```
 Or else
 
 ```bash
-sudo apt install libnet-snmp-perl
+sudo apt-get install libnet-snmp-perl liblog-any-perl
 ```
 
 4. Copy the script directory to /etc and make them executable:
@@ -55,9 +55,9 @@ cargo binstall --no-confirm rust-script
 ```
 2. Uncomment these lines in main.sh and put your token and id in env vars
 ```bash
-LOGS_DIR = /var/uwuscan_log
-API_TOKEN = "Your telegram api token"
-CHAT_ID = "Your telegram chat id"
+export LOGS_DIR = "/var/uwuscan_log"
+export API_TOKEN = "Your telegram api token"
+export CHAT_ID = "Your telegram chat id"
 /etc/uwuscan/attention.rs
 ```
 
