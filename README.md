@@ -55,9 +55,9 @@ cargo binstall --no-confirm rust-script
 ```
 2. Uncomment these lines in main.sh and put your token and id in env vars
 ```bash
-export LOGS_DIR = "/var/uwuscan_log"
-export API_TOKEN = "Your telegram api token"
-export CHAT_ID = "Your telegram chat id"
+export LOGS_DIR="/var/uwuscan_log"
+export API_TOKEN="Your telegram api token"
+export CHAT_ID="Your telegram chat id"
 /etc/uwuscan/attention.rs
 ```
 
