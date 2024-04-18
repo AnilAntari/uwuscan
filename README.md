@@ -39,36 +39,15 @@ sudo cp -r uwuscan/ /etc/ && sudo chmod +x /etc/uwuscan/mfd/*
 
 ## Telegram Notifications
 
-To enable notifications in a Telegram, install rust-script and enable attention.rs in main.sh
-
-1. Install rust-script
-
-Using your package manager:
-```bash
-sudo pacman -S rust-script
-```
-Or using cargo:
-```bash
-# Don't forget to install rust/cargo
-curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
-cargo binstall --no-confirm rust-script
-```
-2. Uncomment these lines in main.sh and put your token and id in env vars
-```bash
-export LOGS_DIR="/var/uwuscan_log"
-export API_TOKEN="Your telegram api token"
-export CHAT_ID="Your telegram chat id"
-/etc/uwuscan/attention.rs
-```
+To enable notifications in Telegram, enable attention.pl in main.sh
 
 ### Configuring the script
 
-In attention.rs in API_TOKEN, specify the bot token, and in CHAT_ID, specify your chat ID. 
+In attention.pl in `my $url = 'https://api.telegram.org/bot<token>/sendMessage';`, specify the bot token, and in `my $chat_id = '<chat id>';`, specify your chat ID.
 
 You can configure the trigger parameters for the bot:
-
-```rust
-entry.cartrige < 20 || entry.drum < 20
+```perl
+$cawtwidge < 20 || $dwum < 20
 ```
 
 # oid

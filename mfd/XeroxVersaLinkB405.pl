@@ -44,8 +44,5 @@ foreach my $element (@ip_address) {
 
         # Log
         $log->info("$element - Cawtwidge: $cartridge%, Dwum: $drum%");
-    } else {
-        # Handle the case when values are not defined
-        $log->info("Faiwed t-to wetwieve cawtwidge and dwum vawues fwom the device $element");
     }
 }
