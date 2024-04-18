@@ -45,6 +45,11 @@ To enable notifications in Telegram, enable attention.pl in main.sh
 
 In attention.pl in `my $url = 'https://api.telegram.org/bot<token>/sendMessage';`, specify the bot token, and in `my $chat_id = '<chat id>';`, specify your chat ID.
 
+You can configure the trigger parameters for the bot:
+```perl
+$cawtwidge < 20 || $dwum < 20
+```
+
 # oid
 
 snmpwalk installation
