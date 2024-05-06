@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Net::SNMP;
 use Log::Any qw($log);
-use Log::Any::Adapter ('File', '/var/uwuscan_log/XeroxWorkCentre3345.log');
+use Log::Any::Adapter ('File', '/var/uwuscan_log/XeroxWorkCentre3615.log');
 
 # List of polled IP addresses
 my @ip_address = (
@@ -23,7 +23,7 @@ foreach my $element (@ip_address) {
         $log->info("Failed to connect to the device $element: $error");
     }
 
-    require '/etc/uwuscan/oid_list/XeroxWorkCentre3345.pm';
+    require '/etc/uwuscan/oid_list/Xerox/XeroxWorkCentre3615.pm';
 
     # Getting the values of the tuner and the drum cartridge
     my $cartridge_max_status     = $session->get_request(-varbindlist => [ $set::oid_list[0] ]);

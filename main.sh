@@ -2,9 +2,10 @@
 
 # Xerox
 
-#/etc/uwuscan/mfd/XeroxVersaLinkB405.pl
-#/etc/uwuscan/mfd/XeroxWorkCentre3345.pl
-#/etc/uwuscan/mfd/XeroxWorkCentre3615.pl
+#/etc/uwuscan/mfd/Xerox/XeroxVersaLinkB405.pl
+#/etc/uwuscan/mfd/Xerox/Xerox/WorkCentre3345.pl
+#/etc/uwuscan/mfd/Xerox/XeroxWorkCentre3615.pl
+#/etc/uuwscan/mfd/Xerox/XeroxB215.pl
 
 # Telegram Notifications
 
