@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
+# Kyocera
+
+#/etc/uwuscan/mfd/Kyocera/Kyocera-FS.pl
+
 # Xerox
+
 #/etc/uwuscan/mfd/Xerox/XeroxB215.pl
 #/etc/uwuscan/mfd/Xerox/XeroxPhaser3610.pl
 #/etc/uwuscan/mfd/Xerox/XeroxPhaser3635MFP.pl
