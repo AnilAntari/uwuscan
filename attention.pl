@@ -7,21 +7,21 @@ use POSIX qw(strftime);
 use File::Basename;
 
 my $dir = '/var/uwuscan_log';
-my $today = strftime "%a %b %e", localtime; # получаем текущую дату в формате "Tue May 7"
+my $today = strftime "%a %b %e", localtime; # Date in the "Tue May 7" format
 
 for my $log_file (glob "$dir/*") {
-    # проверяем, что файл существует и является файлом
+    # Checking the file to make sure that this file is the right file
     if (-f $log_file) {
-        # открываем файл на чтение
+        # Opening a file for reading
         open my $fh, '<', $log_file;
-        # читаем файл построчно
+        # Reading the file line by line
         while (my $line = <$fh>) {
-            # пытаемся извлечь дату, cawtwidge и dwum из строки
+            # attempt to extract data, cartridge and drum from a string
             my ($date, $cawtwidge, $dwum) = $line =~ /(\[.*\]).*Cawtwidge: (\d+)%.*Dwum: (\d+)%/;
 
-            # если дата совпадает с текущей и хотя бы одна из переменных меньше 20
+            # if the date is the same as the current one and at least one of the variables is less than 20
             if ($date =~ /$today/ && defined $cawtwidge && defined $dwum && ($cawtwidge < 20 || $dwum < 20)) {
-                # получаем имя файла
+                # Getting the file name
                 my $file_name = basename($log_file);
                 telegram_attention($file_name);
                 last;
