@@ -3,15 +3,13 @@ use strict;
 use warnings;
 use Net::SNMP;
 use Log::Any qw($log);
-use Log::Any::Adapter ('File', '/var/uwuscan_log/XeroxWorkCentre3345.log');
+use Log::Any::Adapter ('File', '/var/uwuscan_log/XeroxWorkCentre5230.log');
+use lib "/etc/uwuscan/parameters/Xerox";
+use XeroxWorkCentre5230;
 
-# List of polled IP addresses
-my @ip_address = (
-    'IP address'
-);
 my $community = 'public';
 
-foreach my $element (@ip_address) {
+foreach my $element (@set::ip_address) {
     my ($session, $error) = Net::SNMP->session(
         Hostname  => $element,
         Community => $community,
@@ -22,8 +20,6 @@ foreach my $element (@ip_address) {
         # Connection error handling
         $log->info("Failed to connect to the device $element: $error");
     }
-
-    require '/etc/uwuscan/oid_list/XeroxWorkCentre3345.pm';
 
     # Getting the values of the tuner and the drum cartridge
     my $cartridge_max_status     = $session->get_request(-varbindlist => [ $set::oid_list[0] ]);
