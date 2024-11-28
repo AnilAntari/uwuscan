@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Net::SNMP;
 use Log::Any qw($log);
-use Log::Any::Adapter ('File', '/var/uwuscan_log/Kyocera-FS.log');
+use Log::Any::Adapter ('File', '/var/log/uwuscan/Kyocera-FS.log');
 use lib "/uwuscan/parameters/Kyocera";
 use Kyocera-FS;
 

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Net::SNMP;
 use Log::Any qw($log);
-use Log::Any::Adapter ('File', '/var/uwuscan_log/XeroxVersaLinkB405.log');
+use Log::Any::Adapter ('File', '/var/log/uwuscan/XeroxVersaLinkB405.log');
 use lib "/etc/uwuscan/parameters/Xerox";
 use XeroxVersaLinkB405;
 

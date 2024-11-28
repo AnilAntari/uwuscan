@@ -39,7 +39,13 @@ sudo apt-get install libnet-snmp-perl liblog-any-perl
 sudo cp -r uwuscan/ /etc/ && sudo chmod +x /etc/uwuscan/mfd/*
 ```
 
-5. Uncomment in main.sh the scripts you need.
+5. Directory for logs.
+
+```bash
+sudo mkdir /var/log/uwuscan
+```
+
+6. Uncomment in main.sh the scripts you need.
 
 ## Script Configurations
 
@@ -78,6 +84,12 @@ You can configure the trigger parameters for the bot:
 ```perl
 $cawtwidge < 20 || $dwum < 20
 ```
+
+
+## uwuscat
+
+uwucat is a script that allows you to view logs. 
+
 
 # oid
 
