@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Net::SNMP;
 use Log::Any qw($log);
-use Log::Any::Adapter ('File', '/var/uwuscan_log/XeroxPhaser6130N.log');
+use Log::Any::Adapter ('File', '/var/log/uwuscan/XeroxPhaser6130N.log');
 use lib "/etc/uwuscan/parameters/Xerox";
 use XeroxPhaser6130N;
 
